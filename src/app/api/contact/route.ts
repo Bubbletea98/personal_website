@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
 
 interface ContactFormData {
   name: string;
@@ -6,6 +7,9 @@ interface ContactFormData {
   subject: string;
   message: string;
 }
+
+// Initialize Resend with API key from environment variable
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Validate email format
 function isValidEmail(email: string): boolean {
@@ -15,7 +19,7 @@ function isValidEmail(email: string): boolean {
 
 // Sanitize input to prevent injection
 function sanitizeInput(input: string): string {
-  return input.trim().slice(0, 5000); // Limit length
+  return input.trim().slice(0, 5000);
 }
 
 export async function POST(request: NextRequest) {
@@ -49,49 +53,44 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
     };
 
-    // Log the contact form submission (in production, you'd send this to an email service)
-    console.log("📧 Contact form submission received:", {
-      name: sanitizedData.name,
-      email: sanitizedData.email,
-      subject: sanitizedData.subject,
-      messageLength: sanitizedData.message.length,
-      timestamp: sanitizedData.timestamp,
+    // Send email using Resend
+    const { data, error } = await resend.emails.send({
+      from: "Contact Form <onboarding@resend.dev>",
+      to: "fandiyi2333@gmail.com",
+      replyTo: sanitizedData.email,
+      subject: `[Portfolio Contact] ${sanitizedData.subject}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #06b6d4;">New Contact Form Submission</h2>
+          <hr style="border: 1px solid #e2e8f0;" />
+          <p><strong>From:</strong> ${sanitizedData.name}</p>
+          <p><strong>Email:</strong> <a href="mailto:${sanitizedData.email}">${sanitizedData.email}</a></p>
+          <p><strong>Subject:</strong> ${sanitizedData.subject}</p>
+          <hr style="border: 1px solid #e2e8f0;" />
+          <h3>Message:</h3>
+          <p style="white-space: pre-wrap; background: #f8fafc; padding: 16px; border-radius: 8px;">${sanitizedData.message}</p>
+          <hr style="border: 1px solid #e2e8f0;" />
+          <p style="color: #64748b; font-size: 12px;">
+            Sent from your portfolio contact form at ${sanitizedData.timestamp}
+          </p>
+        </div>
+      `,
     });
 
-    // In a production environment, you would integrate with:
-    // - Email services: SendGrid, Mailgun, AWS SES, Resend
-    // - Database: Store in database for record keeping
-    // - Notification services: Slack, Discord webhooks
-    // 
-    // Example with Resend (uncomment and add your API key):
-    // const resend = new Resend(process.env.RESEND_API_KEY);
-    // await resend.emails.send({
-    //   from: 'contact@yourdomain.com',
-    //   to: 'fandiyi2333@gmail.com',
-    //   subject: `[Contact Form] ${sanitizedData.subject}`,
-    //   html: `
-    //     <h2>New Contact Form Submission</h2>
-    //     <p><strong>Name:</strong> ${sanitizedData.name}</p>
-    //     <p><strong>Email:</strong> ${sanitizedData.email}</p>
-    //     <p><strong>Subject:</strong> ${sanitizedData.subject}</p>
-    //     <p><strong>Message:</strong></p>
-    //     <p>${sanitizedData.message}</p>
-    //   `,
-    // });
+    if (error) {
+      console.error("Resend error:", error);
+      return NextResponse.json(
+        { error: "Failed to send email. Please try again later." },
+        { status: 500 }
+      );
+    }
 
-    // For now, we'll simulate a successful submission
-    // Add a small delay to simulate network latency
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    console.log("Email sent successfully:", data);
 
     return NextResponse.json(
       {
         success: true,
-        message: "Message received successfully! I'll get back to you soon.",
-        data: {
-          name: sanitizedData.name,
-          email: sanitizedData.email,
-          timestamp: sanitizedData.timestamp,
-        },
+        message: "Message sent successfully! I'll get back to you soon.",
       },
       { status: 200 }
     );
@@ -111,4 +110,3 @@ export async function GET() {
     { status: 405 }
   );
 }
-

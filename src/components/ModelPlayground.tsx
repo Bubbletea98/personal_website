@@ -160,14 +160,14 @@ export default function ModelPlayground() {
           className="text-center mb-12"
         >
           <span className="inline-block px-4 py-1 rounded-full bg-neural-violet/10 border border-neural-violet/20 text-neural-violet text-sm font-medium mb-4">
-            Interactive Demo
+            Beta Version
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Model <span className="gradient-text">Playground</span>
+            Talk to <span className="gradient-text">Digital Me</span>
           </h2>
           <p className="text-slate-400 max-w-2xl mx-auto">
            Ask questions about my skills, projects, and experience. 	ฅ(^•ﻌ•^ฅ)
-           <br /> Please Note: This is a simulated model, I made it for fun.
+           <br /> Please Note: This is a simulated feature, not a real model. I made it for fun.
           </p>
         </motion.div>
 

@@ -52,12 +52,12 @@ export default function Hero() {
           className="text-center"
         >
           {/* Pre-title */}
-          <motion.div variants={itemVariants} className="mb-6">
+          {/* <motion.div variants={itemVariants} className="mb-6">
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neural-cyan/10 border border-neural-cyan/20 text-neural-cyan text-sm font-medium">
               <span className="w-2 h-2 rounded-full bg-neural-cyan animate-pulse" />
               Available for opportunities
             </span>
-          </motion.div>
+          </motion.div> */}
 
           {/* Main title */}
           <motion.h1
@@ -120,7 +120,7 @@ export default function Hero() {
               whileTap={{ scale: 0.98 }}
               className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-4 rounded-xl bg-gradient-to-br from-neural-teal/20 to-neural-emerald/30 border border-neural-teal/40 text-neural-teal font-semibold text-sm sm:text-base text-center hover:from-neural-teal/30 hover:to-neural-emerald/40 hover:border-neural-teal/60 transition-all hover:shadow-[0_0_25px_rgba(20,184,166,0.3)]"
             >
-              Playground
+              Digital Me
             </motion.a>
 
             <motion.a

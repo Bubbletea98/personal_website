@@ -289,7 +289,7 @@ export const RESUME_DATA: ResumeData = {
       startDate: "2024/05",
       endDate: "Current",
       description: [
-        "Joined as one of the core contributors in Sherpa developer community.",
+        "Joined as one of the contributors in Sherpa developer community.",
         "Built search refinement and chain-of-action tools for this agentic LLM framework.",
       ],
     },
