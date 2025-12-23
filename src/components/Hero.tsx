@@ -84,18 +84,28 @@ export default function Hero() {
           </motion.div>
 
           {/* Description */}
-          <motion.p
+          <motion.div
             variants={itemVariants}
-            className="max-w-3xl mx-auto text-lg md:text-xl text-slate-400 leading-relaxed mb-12"
+            className="max-w-3xl mx-auto text-lg md:text-xl leading-relaxed mb-12 text-center"
           >
-            {RESUME_DATA.personal.highlight}
-          </motion.p>
+            <p className="text-slate-300">I turn ML ideas into production-ready systems — LLMs, agents, prediction models, and everything in between.</p>
+            <p className="text-slate-500 mt-2">... and occasionally lose track of time exploring new frameworks at 2am.</p>
+          </motion.div>
 
           {/* CTA Buttons */}
           <motion.div
             variants={itemVariants}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-5xl mx-auto mb-16"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 max-w-6xl mx-auto mb-16"
           >
+            <motion.a
+              href="#about"
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-4 rounded-xl bg-gradient-to-br from-neural-emerald/20 to-neural-teal/30 border border-neural-emerald/40 text-neural-emerald font-semibold text-sm sm:text-base text-center hover:from-neural-emerald/30 hover:to-neural-teal/40 hover:border-neural-emerald/60 transition-all hover:shadow-[0_0_25px_rgba(16,185,129,0.3)]"
+            >
+              About Me
+            </motion.a>
+
             <motion.a
               href="#projects"
               whileHover={{ scale: 1.03, y: -2 }}
@@ -111,7 +121,7 @@ export default function Hero() {
               whileTap={{ scale: 0.98 }}
               className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-4 rounded-xl bg-gradient-to-br from-neural-violet/20 to-neural-blue/30 border border-neural-violet/40 text-neural-violet font-semibold text-sm sm:text-base text-center hover:from-neural-violet/30 hover:to-neural-blue/40 hover:border-neural-violet/60 transition-all hover:shadow-[0_0_25px_rgba(139,92,246,0.3)]"
             >
-              Work & Education Experience 
+              Work & Education
             </motion.a>
 
             <motion.a

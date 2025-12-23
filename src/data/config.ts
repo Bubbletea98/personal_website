@@ -77,7 +77,7 @@ export const RESUME_DATA: ResumeData = {
   // ═══════════════════════════════════════════════════════════════════════════
   personal: {
     name: "Fandi Yi",
-    address: "7 Mabelle Ave, Toronto, ON M9A 0C9",
+    address: "Toronto, ON M9A 0C9",
     phone: "514-550-9528",
     email: "fandiyi2333@gmail.com",
     linkedin: "https://www.linkedin.com/in/fandi-yi-/",
