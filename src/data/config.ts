@@ -42,6 +42,7 @@ export interface WorkExperience {
 export interface Project {
   name: string;
   platform?: string;
+  link?: string;
   startDate: string;
   endDate: string;
   description: string[];
@@ -272,6 +273,7 @@ export const RESUME_DATA: ResumeData = {
     {
       name: "Dream Journal App",
       platform: "GitHub",
+      link: "https://github.com/Bubbletea98/dreamscape",
       startDate: "2025/10",
       endDate: "Current",
       description: [
@@ -282,6 +284,7 @@ export const RESUME_DATA: ResumeData = {
     {
       name: "LLM Framework – Sherpa",
       platform: "GitHub",
+      link: "https://github.com/Aggregate-Intellect/sherpa",
       startDate: "2024/05",
       endDate: "Current",
       description: [
@@ -291,7 +294,8 @@ export const RESUME_DATA: ResumeData = {
     },
     {
       name: "MODELS Conference 2023",
-      platform: "GitHub",
+      platform: "arXiv",
+      link: "https://arxiv.org/pdf/2309.01715",
       startDate: "2023/02",
       endDate: "2023/09",
       description: [
@@ -302,6 +306,7 @@ export const RESUME_DATA: ResumeData = {
     {
       name: "Stock Signal Bot",
       platform: "Discord",
+      link: "https://discord.com/invite/gV7eTcHh",
       startDate: "2023/01",
       endDate: "Present",
       description: [
@@ -312,6 +317,7 @@ export const RESUME_DATA: ResumeData = {
     {
       name: "Advanced AI Analytics for Airbnb Hosts",
       platform: "GitHub",
+      link: "https://github.com/Bubbletea98/Airbnb",
       startDate: "2021/02",
       endDate: "2021/04",
       description: [
@@ -323,6 +329,7 @@ export const RESUME_DATA: ResumeData = {
     {
       name: "Continuous Testing And Validation of Jamscript",
       platform: "GitHub",
+      link: "https://github.com/donatKapesa/JAMScript",
       startDate: "2019/09",
       endDate: "2020/05",
       description: [
@@ -333,6 +340,7 @@ export const RESUME_DATA: ResumeData = {
     {
       name: "Face Recognition and Tagging",
       platform: "GitHub",
+      link: "https://github.com/Bubbletea98/ECSE415-ComputerFinalProject2019",
       startDate: "2019/09",
       endDate: "2019/12",
       description: [
