@@ -270,28 +270,7 @@ export const RESUME_DATA: ResumeData = {
   // Projects & Research
   // ═══════════════════════════════════════════════════════════════════════════
   projects: [
-    {
-      name: "Dream Journal App",
-      platform: "GitHub",
-      link: "https://github.com/Bubbletea98/dreamscape",
-      startDate: "2025/10",
-      endDate: "Current",
-      description: [
-        "Practicing my vibe coding skill by publishing a dream journal application to apple app store from scratch.",
-        "Vibe coding frontend and backend with Cursor IDE, set up database and edge functions in Supabase, Build and submit app with Expo Application Services.",
-      ],
-    },
-    {
-      name: "LLM Framework – Sherpa",
-      platform: "GitHub",
-      link: "https://github.com/Aggregate-Intellect/sherpa",
-      startDate: "2024/05",
-      endDate: "Current",
-      description: [
-        "Joined as one of the contributors in Sherpa developer community.",
-        "Built search refinement and chain-of-action tools for this agentic LLM framework.",
-      ],
-    },
+    // ⭐ Priority Projects (Featured)
     {
       name: "MODELS Conference 2023",
       platform: "arXiv",
@@ -303,6 +282,29 @@ export const RESUME_DATA: ResumeData = {
         "Compared different LLMs' prediction performance with prompting and fine-tuning methods for various taxonomy datasets.",
       ],
     },
+    {
+      name: "LLM Framework – Sherpa",
+      platform: "GitHub",
+      link: "https://github.com/Aggregate-Intellect/sherpa",
+      startDate: "2024/05",
+      endDate: "Current",
+      description: [
+        "Joined as one of the core contributors in Sherpa developer community.",
+        "Built search refinement and chain-of-action tools for this agentic LLM framework.",
+      ],
+    },
+    {
+      name: "Dream Journal App",
+      platform: "GitHub",
+      link: "https://github.com/Bubbletea98/dreamscape",
+      startDate: "2025/10",
+      endDate: "Current",
+      description: [
+        "Practicing my vibe coding skill by publishing a dream journal application to apple app store from scratch.",
+        "Vibe coding frontend and backend with Cursor IDE, set up database and edge functions in Supabase, Build and submit app with Expo Application Services.",
+      ],
+    },
+    // Other Projects
     {
       name: "Stock Signal Bot",
       platform: "Discord",

@@ -39,16 +39,17 @@ const getProjectIcon = (name: string) => {
 };
 
 // Define grid spans for bento layout
+// Priority: MODELS (large), Sherpa (tall), Dream Journal (tall), then smaller cards
 const getGridSpan = (index: number): string => {
   const spans = [
-    "md:col-span-2 md:row-span-2", // Large featured
-    "md:col-span-1 md:row-span-1", // Small
-    "md:col-span-1 md:row-span-2", // Tall
-    "md:col-span-2 md:row-span-1", // Wide
-    "md:col-span-1 md:row-span-1", // Small
-    "md:col-span-1 md:row-span-1", // Small
-    "md:col-span-2 md:row-span-1", // Wide
-    "md:col-span-1 md:row-span-1", // Small
+    "md:col-span-2 md:row-span-2", // 0: MODELS Conference - Large featured (2x2)
+    "md:col-span-1 md:row-span-2", // 1: Sherpa - Tall (1x2)
+    "md:col-span-1 md:row-span-2", // 2: Dream Journal - Tall (1x2)
+    "md:col-span-1 md:row-span-1", // 3: Stock Signal Bot - Small
+    "md:col-span-2 md:row-span-1", // 4: Airbnb - Wide
+    "md:col-span-1 md:row-span-1", // 5: Jamscript - Small
+    "md:col-span-1 md:row-span-1", // 6: Face Recognition - Small
+    "md:col-span-1 md:row-span-1", // 7: Rocket Club - Small
   ];
   return spans[index % spans.length];
 };
