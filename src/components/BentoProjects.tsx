@@ -38,18 +38,19 @@ const getProjectIcon = (name: string) => {
   return "💡";
 };
 
-// Define grid spans for bento layout
-// Priority: MODELS (large), Sherpa (tall), Dream Journal (tall), then smaller cards
+// Define grid spans for bento layout (10-column grid for precise ratios)
+// Row 1: MODELS (5) + Sherpa (5) = equal size
+// Row 2: Dream Journal (6) + Stock Signal (4) = 6:4 ratio
 const getGridSpan = (index: number): string => {
   const spans = [
-    "md:col-span-2 md:row-span-2", // 0: MODELS Conference - Large featured (2x2)
-    "md:col-span-1 md:row-span-2", // 1: Sherpa - Tall (1x2)
-    "md:col-span-1 md:row-span-2", // 2: Dream Journal - Tall (1x2)
-    "md:col-span-1 md:row-span-1", // 3: Stock Signal Bot - Small
-    "md:col-span-2 md:row-span-1", // 4: Airbnb - Wide
-    "md:col-span-1 md:row-span-1", // 5: Jamscript - Small
-    "md:col-span-1 md:row-span-1", // 6: Face Recognition - Small
-    "md:col-span-1 md:row-span-1", // 7: Rocket Club - Small
+    "md:col-span-5 md:row-span-1", // 0: MODELS Conference - Half of row 1
+    "md:col-span-5 md:row-span-1", // 1: Sherpa - Half of row 1 (equal with MODELS)
+    "md:col-span-6 md:row-span-1", // 2: Dream Journal - 6/10 of row 2
+    "md:col-span-4 md:row-span-1", // 3: Stock Signal Bot - 4/10 of row 2
+    "md:col-span-5 md:row-span-1", // 4: Airbnb - Half
+    "md:col-span-5 md:row-span-1", // 5: Jamscript - Half
+    "md:col-span-5 md:row-span-1", // 6: Face Recognition - Half
+    "md:col-span-5 md:row-span-1", // 7: Rocket Club - Half
   ];
   return spans[index % spans.length];
 };
@@ -84,8 +85,8 @@ export default function BentoProjects() {
           </p>
         </motion.div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[minmax(180px,auto)]">
+        {/* Bento Grid - 10 columns for precise sizing */}
+        <div className="grid grid-cols-1 md:grid-cols-10 gap-4 md:gap-6 auto-rows-[minmax(180px,auto)]">
           {projects.map((project, index) => (
             <motion.div
               key={project.name}
@@ -115,11 +116,35 @@ export default function BentoProjects() {
                     <span className="text-xs text-slate-500 font-mono">
                       {project.startDate} → {project.endDate}
                     </span>
-                    {project.platform && (
+                    {project.platform && project.link ? (
+                      <motion.a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center gap-1 text-xs px-2 py-1 rounded bg-neural-cyan/10 border border-neural-cyan/30 text-neural-cyan hover:bg-neural-cyan/20 hover:border-neural-cyan/50 transition-all"
+                      >
+                        {project.platform}
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
+                        </svg>
+                      </motion.a>
+                    ) : project.platform ? (
                       <span className="text-xs px-2 py-1 rounded bg-abyss-700/50 text-slate-400">
                         {project.platform}
                       </span>
-                    )}
+                    ) : null}
                   </div>
                 </div>
 
@@ -140,8 +165,8 @@ export default function BentoProjects() {
                   ))}
                 </div>
 
-                {/* Tech Stack Badges & Link */}
-                <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-abyss-700/50">
+                {/* Tech Stack Badges */}
+                <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-abyss-700/50">
                   {(projectTechStacks[project.name] || ["Tech"]).map((tech) => (
                     <motion.span
                       key={tech}
@@ -151,31 +176,6 @@ export default function BentoProjects() {
                       {tech}
                     </motion.span>
                   ))}
-                  {project.link && (
-                    <motion.a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neural-cyan/10 border border-neural-cyan/30 text-neural-cyan text-xs font-medium hover:bg-neural-cyan/20 hover:border-neural-cyan/50 transition-all"
-                    >
-                      <span>View</span>
-                      <svg
-                        className="w-3.5 h-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </motion.a>
-                  )}
                 </div>
 
                 {/* Hover glow effect */}
