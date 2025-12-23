@@ -1,0 +1,281 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================================
+   Deep Sea / Neural Network Aesthetic - Global Styles
+   ============================================================================ */
+
+:root {
+  /* Deep Sea Palette */
+  --abyss-950: #020617;
+  --abyss-900: #0a0f1a;
+  --abyss-800: #0f172a;
+  --abyss-700: #1e293b;
+  --abyss-600: #334155;
+
+  /* Neural Accent Colors */
+  --neural-cyan: #06b6d4;
+  --neural-teal: #14b8a6;
+  --neural-emerald: #10b981;
+  --neural-blue: #3b82f6;
+  --neural-violet: #8b5cf6;
+
+  /* Glow Effects */
+  --glow-cyan: rgba(6, 182, 212, 0.5);
+  --glow-teal: rgba(20, 184, 166, 0.4);
+  --glow-blue: rgba(59, 130, 246, 0.5);
+
+  /* Text Colors */
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+}
+
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--abyss-950);
+  color: var(--text-primary);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Neural Grid Background */
+.neural-grid {
+  background-image: 
+    linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: -1px -1px;
+}
+
+/* Glowing Text Effect */
+.glow-text {
+  text-shadow: 
+    0 0 20px var(--glow-cyan),
+    0 0 40px var(--glow-cyan),
+    0 0 60px var(--glow-teal);
+}
+
+.glow-text-subtle {
+  text-shadow: 
+    0 0 10px var(--glow-cyan),
+    0 0 20px rgba(6, 182, 212, 0.3);
+}
+
+/* Neural Node Glow */
+.neural-node {
+  box-shadow: 
+    0 0 10px var(--glow-cyan),
+    0 0 20px var(--glow-cyan),
+    0 0 30px var(--glow-teal);
+}
+
+/* Glass Morphism Cards */
+.glass-card {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(6, 182, 212, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(6, 182, 212, 0.3);
+  box-shadow: 
+    0 0 30px rgba(6, 182, 212, 0.1),
+    inset 0 0 30px rgba(6, 182, 212, 0.03);
+}
+
+/* Gradient Border Effect */
+.gradient-border {
+  position: relative;
+  background: linear-gradient(var(--abyss-800), var(--abyss-800)) padding-box,
+              linear-gradient(135deg, var(--neural-cyan), var(--neural-teal), var(--neural-violet)) border-box;
+  border: 1px solid transparent;
+}
+
+/* Terminal/Code Editor Styling */
+.terminal-window {
+  background: linear-gradient(180deg, #0d1117 0%, #010409 100%);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.terminal-header {
+  background: linear-gradient(180deg, #21262d 0%, #161b22 100%);
+  border-bottom: 1px solid rgba(48, 54, 61, 0.8);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #27ca40; }
+
+.terminal-body {
+  padding: 20px;
+  font-family: var(--font-geist-mono), 'JetBrains Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Code Syntax Highlighting */
+.syntax-keyword { color: #ff7b72; }
+.syntax-string { color: #a5d6ff; }
+.syntax-function { color: #d2a8ff; }
+.syntax-number { color: #79c0ff; }
+.syntax-comment { color: #8b949e; }
+.syntax-variable { color: #ffa657; }
+
+/* Typing Cursor */
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: var(--neural-cyan);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Progress Bar */
+.progress-bar {
+  background: linear-gradient(90deg, 
+    var(--neural-cyan) 0%,
+    var(--neural-teal) 50%,
+    var(--neural-emerald) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Pulse Glow Animation */
+@keyframes pulse-glow {
+  0%, 100% { 
+    opacity: 0.4;
+    box-shadow: 0 0 20px var(--glow-cyan);
+  }
+  50% { 
+    opacity: 0.8;
+    box-shadow: 0 0 40px var(--glow-cyan), 0 0 60px var(--glow-teal);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--neural-cyan) 0%, var(--neural-teal) 50%, var(--neural-violet) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Tech Badge Styling */
+.tech-badge {
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  color: var(--neural-cyan);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.tech-badge:hover {
+  background: rgba(6, 182, 212, 0.2);
+  border-color: rgba(6, 182, 212, 0.5);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--abyss-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--abyss-600);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--abyss-500);
+}
+
+/* Selection Styling */
+::selection {
+  background: rgba(6, 182, 212, 0.3);
+  color: white;
+}
+
+/* Focus Styles */
+:focus-visible {
+  outline: 2px solid var(--neural-cyan);
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for interactive elements */
+button, a, input, textarea {
+  transition: all 0.2s ease;
+}
+
+/* Container utilities */
+.section-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Neural connection line */
+.neural-line {
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%,
+    var(--neural-cyan) 20%,
+    var(--neural-teal) 50%,
+    var(--neural-cyan) 80%,
+    transparent 100%
+  );
+  opacity: 0.3;
+}
+
