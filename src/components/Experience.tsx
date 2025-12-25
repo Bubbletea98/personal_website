@@ -3,14 +3,29 @@
 import { motion } from "framer-motion";
 import { RESUME_DATA } from "@/data/config";
 
+// Helper function to parse **bold** markers and render with bold styling
+function renderWithBold(text: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      const boldText = part.slice(2, -2);
+      return (
+        <strong key={index} className="font-bold text-black">
+          {boldText}
+        </strong>
+      );
+    }
+    return part;
+  });
+}
+
 export default function Experience() {
   const { workExperience, education } = RESUME_DATA;
 
   return (
-    <section id="experience" className="py-24 relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 neural-grid opacity-20" />
-      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-neural-blue/5 rounded-full blur-[120px]" />
+    <section id="experience" className="py-16 relative overflow-hidden bg-white">
+      {/* Grid Background - reduced opacity */}
+      <div className="absolute inset-0 schematic-grid" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
@@ -18,173 +33,157 @@ export default function Experience() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mb-12"
         >
-          <span className="inline-block px-4 py-1 rounded-full bg-neural-blue/10 border border-neural-blue/20 text-neural-blue text-sm font-medium mb-4">
-            Career Journey
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Experience & <span className="gradient-text">Education</span>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-1 w-12 bg-black" />
+            <span className="font-mono text-sm font-bold uppercase tracking-widest text-black/60">
+              03 // Career Path
+            </span>
+          </div>
+          <h2 className="font-mono text-3xl md:text-4xl font-bold">
+            Work <span className="bg-[#7c3aed] text-white px-2 border-2 border-black">&</span> Education
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-12">
-          {/* Work Experience - Takes 2 columns */}
-          <div className="lg:col-span-2 space-y-8">
-            <h3 className="text-2xl font-bold text-slate-100 mb-6 flex items-center gap-3">
-              <span className="w-10 h-10 rounded-lg bg-gradient-to-br from-neural-cyan to-neural-teal flex items-center justify-center text-abyss-950">
-                💼
-              </span>
-              Work & Education Experience 
+        <div className="grid lg:grid-cols-2 gap-8">
+          {/* Work Experience */}
+          <div>
+            <h3 className="font-mono text-lg font-bold uppercase mb-6 flex items-center gap-3">
+              <span className="w-7 h-7 bg-[#ff6b35] border-2 border-black flex items-center justify-center font-bold text-sm">W</span>
+              Work Experience
             </h3>
 
-            {/* Timeline */}
             <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-neural-cyan via-neural-teal to-neural-violet opacity-30" />
+              {/* Continuous Timeline Line */}
+              <div className="absolute left-[14px] top-[20px] bottom-[20px] w-[3px] bg-black" />
 
-              {workExperience.map((job, index) => (
-                <motion.div
-                  key={`${job.company}-${job.startDate}`}
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="relative pl-16 pb-12 last:pb-0"
-                >
-                  {/* Timeline node */}
-                  <div className="absolute left-4 top-1 w-4 h-4 rounded-full bg-gradient-to-br from-neural-cyan to-neural-teal shadow-[0_0_20px_rgba(6,182,212,0.5)]" />
-
-                  {/* Card */}
-                  <div className="glass-card rounded-2xl p-6 hover:shadow-[0_0_30px_rgba(6,182,212,0.1)] transition-shadow">
-                    {/* Header */}
-                    <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
-                      <div>
-                        <h4 className="text-xl font-bold text-slate-100">
-                          {job.title}
-                        </h4>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-neural-cyan font-medium">
-                            {job.company}
-                          </span>
-                          {job.team && (
-                            <>
-                              <span className="text-slate-600">•</span>
-                              <span className="text-slate-400 text-sm">
-                                {job.team}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-sm text-slate-400 font-mono">
-                          {job.startDate} — {job.endDate}
-                        </span>
-                        <div className="text-xs text-slate-500 mt-1">
-                          📍 {job.location}
-                        </div>
+              <div className="space-y-4">
+                {workExperience.map((job, index) => (
+                  <motion.div
+                    key={`${job.company}-${job.title}`}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.05 }}
+                    className="relative flex gap-4"
+                  >
+                    {/* Timeline Node */}
+                    <div className="flex-shrink-0 relative z-10">
+                      <div className="w-8 h-8 bg-white border-3 border-black flex items-center justify-center font-mono font-bold text-xs">
+                        {String(index + 1).padStart(2, "0")}
                       </div>
                     </div>
 
-                    {/* Highlights */}
-                    <ul className="space-y-3">
-                      {job.highlights.map((highlight, i) => (
-                        <motion.li
-                          key={i}
-                          initial={{ opacity: 0 }}
-                          whileInView={{ opacity: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: 0.2 + i * 0.1 }}
-                          className="flex items-start gap-3 text-slate-300"
-                        >
-                          <span className="text-neural-teal mt-1.5 flex-shrink-0">
-                            ▹
-                          </span>
-                          <span className="text-sm leading-relaxed">
-                            {highlight}
-                          </span>
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </div>
-                </motion.div>
-              ))}
+                    {/* Content Card - Full height, no clipping */}
+                    <div className="flex-1 bg-[#fafaf9] border-2 border-black p-4 shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+                      <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+                        <div>
+                          <h4 className="font-mono font-bold text-base leading-tight">{job.title}</h4>
+                          <p className="font-mono text-sm text-black/60">{job.company}</p>
+                        </div>
+                        <span className="font-mono text-[10px] px-2 py-0.5 bg-[#fbbf24] border border-black whitespace-nowrap">
+                          {job.startDate} - {job.endDate}
+                        </span>
+                      </div>
+
+                      {/* Show ALL highlights with bold rendering */}
+                      <ul className="space-y-1.5">
+                        {job.highlights.map((highlight: string, i: number) => (
+                          <li key={i} className="text-sm text-black/80 flex gap-2 leading-relaxed">
+                            <span className="text-[#ff6b35] font-bold flex-shrink-0">→</span>
+                            <span>{renderWithBold(highlight)}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Education - Takes 1 column */}
-          <div className="space-y-8">
-            <h3 className="text-2xl font-bold text-slate-100 mb-6 flex items-center gap-3">
-              <span className="w-10 h-10 rounded-lg bg-gradient-to-br from-neural-violet to-neural-blue flex items-center justify-center text-white">
-                🎓
-              </span>
+          {/* Education */}
+          <div>
+            <h3 className="font-mono text-lg font-bold uppercase mb-6 flex items-center gap-3">
+              <span className="w-7 h-7 bg-[#0d9488] text-white border-2 border-black flex items-center justify-center font-bold text-sm">E</span>
               Education
             </h3>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               {education.map((edu, index) => (
                 <motion.div
                   key={edu.degree}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.15 }}
-                  className="glass-card rounded-2xl p-6 relative overflow-hidden group"
+                  transition={{ delay: index * 0.05 }}
+                  className="bg-[#fafaf9] border-2 border-black p-4 shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all"
                 >
-                  {/* Accent gradient */}
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neural-violet via-neural-blue to-neural-cyan" />
-
-                  <div className="mb-4">
-                    <h4 className="text-lg font-bold text-slate-100 mb-1">
-                      {edu.degree}
-                    </h4>
-                    <div className="text-neural-violet font-medium">
-                      {edu.institution}
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="w-10 h-10 bg-[#7c3aed] border-2 border-black flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-lg">🎓</span>
                     </div>
-                    <div className="text-sm text-slate-400 font-mono mt-1">
-                      {edu.startDate} — {edu.endDate}
+                    <div className="flex-1">
+                      <h4 className="font-mono font-bold text-base leading-tight">{edu.degree}</h4>
+                      <p className="font-mono text-sm text-black/60">{edu.institution}</p>
                     </div>
+                    <span className="font-mono text-[10px] px-2 py-0.5 bg-[#0d9488] text-white border border-black whitespace-nowrap">
+                      {edu.startDate} - {edu.endDate}
+                    </span>
                   </div>
 
-                  {/* GPA & Honors */}
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs px-2 py-1 rounded bg-neural-cyan/10 text-neural-cyan">
-                        GPA: {edu.gpa}
-                      </span>
-                    </div>
+                  <div className="flex flex-wrap gap-2">
                     {edu.honors && (
-                      <div className="text-sm text-neural-emerald">
-                        ⭐ {edu.honors}
-                      </div>
+                      <span className="font-mono text-xs px-2 py-0.5 bg-[#fbbf24] border border-black">
+                        {edu.honors}
+                      </span>
                     )}
+                    <span className="font-mono text-xs px-2 py-0.5 border border-black/30 bg-white">
+                      GPA: {edu.gpa}
+                    </span>
                   </div>
 
-                  {/* Courses */}
-                  <div>
-                    <div className="text-xs text-slate-500 mb-2">
-                      Relevant Courses:
+                  {edu.courses && edu.courses.length > 0 && (
+                    <div className="mt-3 pt-3 border-t border-dashed border-black/20">
+                      <p className="font-mono text-[10px] uppercase tracking-wider text-black/50 mb-1.5">
+                        Key Courses
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {edu.courses.map((course: string) => (
+                          <span
+                            key={course}
+                            className="font-mono text-[11px] px-1.5 py-0.5 border border-black/20 bg-white"
+                          >
+                            {course}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {edu.courses.map((course) => (
-                        <span
-                          key={course}
-                          className="text-xs px-2 py-1 rounded bg-abyss-700/50 text-slate-400"
-                        >
-                          {course}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                  )}
                 </motion.div>
               ))}
             </div>
 
+            {/* Compact Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mt-6 grid grid-cols-2 gap-3"
+            >
+              <div className="bg-black text-white p-4 border-2 border-black">
+                <div className="font-mono text-2xl font-bold">2016</div>
+                <div className="font-mono text-[10px] uppercase tracking-wider opacity-70">Started Journey</div>
+              </div>
+              <div className="bg-[#ff6b35] p-4 border-2 border-black">
+                <div className="font-mono text-2xl font-bold">6+</div>
+                <div className="font-mono text-[10px] uppercase tracking-wider">Years in ML</div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
     </section>
   );
 }
-

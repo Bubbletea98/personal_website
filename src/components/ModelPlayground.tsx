@@ -1,174 +1,218 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { RESUME_DATA } from "@/data/config";
 
-interface InferenceResult {
-  category: string;
-  confidence: number;
-  description: string;
-}
-
-const predefinedQueries = [
-  "What are Fandi's main skills?",
-  "Tell me about LLM experience",
-  "What projects has Fandi worked on?",
-  "What is Fandi's educational background?",
+// Suggested questions for users (examples only)
+const SUGGESTED_QUESTIONS = [
+  { query: "Who is Fandi?", label: "whoami" },
+  { query: "What are Fandi's LLM experiences?", label: "llm" },
+  { query: "What are Fandi's project experiences?", label: "projects" },
+  { query: "What is Fandi's education background?", label: "education" },
+  { query: "What are Fandi's skills?", label: "skills" },
+  { query: "What is Fandi's favorite food?", label: "food" },
 ];
 
-const generateMockResponse = (query: string): InferenceResult[] => {
-  const lowerQuery = query.toLowerCase();
-  const { skills, workExperience, projects, education } = RESUME_DATA;
-
-  if (
-    lowerQuery.includes("skill") ||
-    lowerQuery.includes("tech") ||
-    lowerQuery.includes("know")
-  ) {
-    // Custom confidence scores: Languages & Tools, Frameworks, ML Focus, Cloud & Infra
-    const skillConfidences = [0.90, 0.85, 0.95, 0.85];
-    return skills
-      .slice(0, 4)
-      .map((category, i) => ({
-        category: category.category,
-        confidence: skillConfidences[i] ?? 0.85,
-        description: category.skills.slice(0, 3).join(", "),
-      }))
-      .sort((a, b) => b.confidence - a.confidence);
-  }
-
-  if (
-    lowerQuery.includes("llm") ||
-    lowerQuery.includes("language model") ||
-    lowerQuery.includes("ai")
-  ) {
-    return [
-      {
-        category: "LLM Expertise",
-        confidence: 0.97,
-        description: "RAG, LangGraph, LangChain, Fine-tuning",
-      },
-      {
-        category: "Current Role",
-        confidence: 0.94,
-        description: workExperience[0].highlights[1].slice(0, 80) + "...",
-      },
-      {
-        category: "Research",
-        confidence: 0.89,
-        description: "MODELS 2023 - LLM Taxonomy Generation Paper",
-      },
-    ];
-  }
-
-  if (lowerQuery.includes("project") || lowerQuery.includes("work")) {
-    return projects.slice(0, 4).map((project, i) => ({
-      category: project.name,
-      confidence: 0.92 - i * 0.03,
-      description: project.description[0].slice(0, 60) + "...",
-    }));
-  }
-
-  if (
-    lowerQuery.includes("education") ||
-    lowerQuery.includes("school") ||
-    lowerQuery.includes("degree")
-  ) {
-    return education.map((edu, i) => ({
-      category: edu.degree,
-      confidence: 0.96 - i * 0.02,
-      description: `${edu.institution} | GPA: ${edu.gpa}`,
-    }));
-  }
-
-  // Default response
-  return [
-    {
-      category: "Professional Summary",
-      confidence: 0.91,
-      description: RESUME_DATA.personal.highlight.slice(0, 80) + "...",
-    },
-    {
-      category: "Top Skills",
-      confidence: 0.88,
-      description: skills[0].skills.slice(0, 4).join(", "),
-    },
-    {
-      category: "Latest Position",
-      confidence: 0.85,
-      description: `${workExperience[0].title} @ ${workExperience[0].company}`,
-    },
-  ];
-};
+// Processing stages for the "inference" effect
+const PROCESSING_STAGES = [
+  "Tokenizing input...",
+  "Loading embeddings...",
+  "Running inference...",
+  "Computing attention weights...",
+  "Generating response...",
+];
 
 export default function ModelPlayground() {
-  const [query, setQuery] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [results, setResults] = useState<InferenceResult[] | null>(null);
-  const [showOutput, setShowOutput] = useState(false);
-  const [processingStage, setProcessingStage] = useState(0);
-  const terminalRef = useRef<HTMLDivElement>(null);
+  const [input, setInput] = useState("");
+  const [history, setHistory] = useState<{ type: "user" | "bot" | "system"; text: string }[]>([
+    { type: "system", text: "FANDI_INFERENCE_ENGINE V2.0 initialized..." },
+    { type: "system", text: "Model loaded fandi-fancy-embeddings-v2 | Ready for inference" },
+    { type: "bot", text: "Hello! Ask me anything about Fandi. Try the suggestions below or type your own question." },
+  ]);
+  const [isTyping, setIsTyping] = useState(false);
+  const [currentStage, setCurrentStage] = useState("");
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const processingStages = [
-    "Tokenizing input...",
-    "Encoding embeddings...",
-    "Running inference...",
-    "Computing attention weights...",
-    "Generating response...",
-  ];
+  const { personal, education, skills, workExperience, projects } = RESUME_DATA;
 
-  const handleSubmit = async () => {
-    if (!query.trim() || isProcessing) return;
+  // Auto-scroll to bottom when history updates
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [history, isTyping, currentStage]);
 
-    setIsProcessing(true);
-    setShowOutput(true);
-    setResults(null);
-    setProcessingStage(0);
+  // Generate response based on query
+  const generateResponse = (query: string): string => {
+    const lowerQuery = query.toLowerCase();
 
-    // Simulate processing stages
-    for (let i = 0; i < processingStages.length; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      setProcessingStage(i + 1);
+    // Clear command
+    if (lowerQuery.includes("clear")) {
+      return "__CLEAR__";
     }
 
-    // Generate mock results
-    const mockResults = generateMockResponse(query);
-    setResults(mockResults);
-    setIsProcessing(false);
+    // Who is Fandi / whoami
+    if (lowerQuery.includes("who") || lowerQuery.includes("whoami") || lowerQuery.includes("about")) {
+      return `${personal.name} — Senior ML Engineer at RBC, McGill Alum, and LLM specialist. 6+ years of experience building production ML systems, from model design to deployment. Currently leading a team developing agentic RAG chatbots that streamline enterprise operations.`;
+    }
+
+    // LLM experiences
+    if (lowerQuery.includes("llm") || lowerQuery.includes("language model") || lowerQuery.includes("agent")) {
+      const llmSkills = skills.find(s => s.category === "ML Focus")?.skills.join(", ") || "";
+      const frameworks = skills.find(s => s.category === "Frameworks")?.skills.join(", ") || "";
+      return `LLM Expertise: ${llmSkills}\nFrameworks: ${frameworks}\n\nAt RBC, I lead development of agentic RAG-based chatbots using FastMCP, LangGraph, and LangFuse — projected 30% reduction in operational time for the enterprise change management team.`;
+    }
+
+    // Projects - with clean summaries
+    if (lowerQuery.includes("project")) {
+      const projectSummaries: Record<string, string> = {
+        "MODELS Conference 2023": "Co-first author on LLM taxonomy paper comparing prompting vs fine-tuning methods",
+        "LLM Framework – Sherpa": "Open-source contributor building search refinement and chain-of-action tools",
+        "Dream Journal App": "Full-stack iOS app built with Cursor IDE, deployed to Apple App Store",
+        "Stock Signal Bot": "Real-time Discord bot for stock alerts using MACD/RSI analytics",
+      };
+      const projectList = projects.slice(0, 4).map(p => {
+        const summary = projectSummaries[p.name] || p.description[0]?.replace(/\*\*/g, '').slice(0, 60);
+        return `• ${p.name}: ${summary}`;
+      }).join("\n");
+      return `Featured Projects:\n${projectList}`;
+    }
+
+    // Education
+    if (lowerQuery.includes("education") || lowerQuery.includes("school") || lowerQuery.includes("degree") || lowerQuery.includes("university")) {
+      const eduDetails = education.map(e => {
+        const honors = e.honors ? ` | ${e.honors}` : "";
+        return `• ${e.degree} @ ${e.institution}\n  GPA: ${e.gpa}${honors}\n  Key Courses: ${e.courses.slice(0, 3).join(", ")}`;
+      }).join("\n\n");
+      return `Education Background:\n${eduDetails}`;
+    }
+
+    // Skills / Tech Stack
+    if (lowerQuery.includes("skill") || lowerQuery.includes("tech") || lowerQuery.includes("stack")) {
+      const skillList = skills.map(s => `• ${s.category}: ${s.skills.join(", ")}`).join("\n");
+      return `Technical Skills:\n${skillList}`;
+    }
+
+    // Work Experience
+    if (lowerQuery.includes("experience") || lowerQuery.includes("work") || lowerQuery.includes("job") || lowerQuery.includes("company")) {
+      const workSummaries: Record<string, string> = {
+        "RBC": "Leading 5-member team on agentic RAG chatbots, deployed 4 enterprise ML models",
+        "CIBC": "Built NLP entity linking APIs and large-scale contract document search",
+        "Alibaba Group": "Analyzed OKR data (10M+ records) with Neo4j graph database",
+        "McGill University": "NLP research on Twitter sentiment analysis with BERT classifiers",
+      };
+      const expList = workExperience.slice(0, 4).map(w => {
+        const summary = workSummaries[w.company] || w.highlights[0]?.replace(/\*\*/g, '').slice(0, 50);
+        return `• ${w.title} @ ${w.company} (${w.startDate} - ${w.endDate})\n  ${summary}`;
+      }).join("\n\n");
+      return `Work Experience:\n${expList}`;
+    }
+
+    // Fun questions
+    if (lowerQuery.includes("food") || lowerQuery.includes("eat") || lowerQuery.includes("favorite")) {
+      return "🍗 Fried chicken! Specifically Korean fried chicken with yangnyeom sauce. Also a big fan of bubble tea (hence my GitHub username @Bubbletea98).";
+    }
+
+    if (lowerQuery.includes("hobby") || lowerQuery.includes("fun") || lowerQuery.includes("free time")) {
+      return "When not coding, I enjoy exploring new ML frameworks at 2am ☕, contributing to open-source projects like Sherpa, and occasionally building side projects like my Dream Journal App.";
+    }
+
+    if (lowerQuery.includes("contact") || lowerQuery.includes("email") || lowerQuery.includes("reach")) {
+      return `📧 Email: ${personal.email}\n🔗 LinkedIn: ${personal.linkedin}\n💻 GitHub: ${personal.github}`;
+    }
+
+    // Default response
+    return `I can answer questions about Fandi's skills, LLM experience, projects, education, work history, and even favorite food! Try asking something specific.`;
   };
 
-  useEffect(() => {
-    if (terminalRef.current && showOutput) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+  const handleCommand = async (queryText: string) => {
+    const cleanQuery = queryText.trim();
+    if (!cleanQuery || isTyping) return;
+
+    // Add user message to history
+    setHistory(prev => [...prev, { type: "user", text: cleanQuery }]);
+    setInput("");
+    setIsTyping(true);
+
+    // Check for clear command early
+    if (cleanQuery.toLowerCase().includes("clear")) {
+      setTimeout(() => {
+        setHistory([
+          { type: "system", text: "Terminal cleared." },
+          { type: "bot", text: "Ready for new queries!" },
+        ]);
+        setIsTyping(false);
+        setCurrentStage("");
+      }, 300);
+      return;
     }
-  }, [processingStage, results, showOutput]);
+
+    // Simulate processing stages
+    for (let i = 0; i < PROCESSING_STAGES.length; i++) {
+      setCurrentStage(PROCESSING_STAGES[i]);
+      await new Promise(resolve => setTimeout(resolve, 300));
+    }
+
+    // Generate and add response
+    const response = generateResponse(cleanQuery);
+    setHistory(prev => [...prev, { type: "bot", text: response }]);
+    setIsTyping(false);
+    setCurrentStage("");
+  };
 
   return (
-    <section id="playground" className="py-24 relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 neural-grid opacity-20" />
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-neural-violet/5 rounded-full blur-[120px]" />
-      <div className="absolute bottom-0 right-0 w-64 h-64 bg-neural-cyan/5 rounded-full blur-[100px]" />
+    <section id="playground" className="py-16 relative overflow-hidden bg-white">
+      {/* Grid Background */}
+      <div className="absolute inset-0 schematic-grid" />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-8"
         >
-          <span className="inline-block px-4 py-1 rounded-full bg-neural-violet/10 border border-neural-violet/20 text-neural-violet text-sm font-medium mb-4">
-            Beta Version
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Talk to <span className="gradient-text">Digital Me</span>
+          <div className="flex items-center justify-center gap-4 mb-3">
+            <div className="h-1 w-8 bg-black" />
+            <span className="font-mono text-xs font-bold uppercase tracking-widest text-black/60">
+              01 // Interactive
+            </span>
+            <div className="h-1 w-8 bg-black" />
+          </div>
+          <h2 className="font-mono text-3xl md:text-4xl font-bold mb-2 flex items-center justify-center gap-3 flex-wrap">
+            <span>Talk to <span className="bg-[#0d9488] text-white px-2 border-2 border-black">Digital Me</span></span>
+            <span className="px-2 py-0.5 text-xs font-bold uppercase bg-[#fbbf24] border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]">Beta</span>
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
-           Ask questions about my skills, projects, and experience. 	ฅ(^•ﻌ•^ฅ)
-           <br /> Please Note: This is a simulated feature, not a real model. I made it for fun.
+          <p className="text-sm text-black/60 max-w-md mx-auto">
+            Please note, this is a simulation of an LLM inference engine. I just made it for fun, not a real LLM. ฅ(^•ﻌ•^ฅ)
           </p>
+        </motion.div>
+
+        {/* Suggestion Chips - Above terminal for visibility */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-6"
+        >
+          <p className="text-sm font-mono font-bold uppercase tracking-wider text-center mb-3">
+            <span className="bg-[#CCFF00] px-2 py-1 border-2 border-black">Suggested Questions</span>
+          </p>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {SUGGESTED_QUESTIONS.map((q) => (
+              <button
+                key={q.label}
+                onClick={() => handleCommand(q.query)}
+                disabled={isTyping}
+                className="bg-white border-2 border-black px-3 py-1.5 font-mono text-xs font-bold shadow-[3px_3px_0px_0px_#000] hover:bg-[#CCFF00] hover:-translate-y-0.5 hover:shadow-[3px_5px_0px_0px_#000] active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {q.query}
+              </button>
+            ))}
+          </div>
         </motion.div>
 
         {/* Terminal Window */}
@@ -176,210 +220,91 @@ export default function ModelPlayground() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="terminal-window shadow-2xl shadow-neural-cyan/10"
+          className="w-full font-mono"
         >
-          {/* Terminal Header */}
-          <div className="terminal-header">
-            <div className="terminal-dot red" />
-            <div className="terminal-dot yellow" />
-            <div className="terminal-dot green" />
-            <span className="ml-4 text-sm text-slate-400 font-mono">
-              fandi-inference-engine v2.0
-            </span>
-            <div className="ml-auto flex items-center gap-2 text-xs text-slate-500">
-              <span className="w-2 h-2 rounded-full bg-neural-cyan animate-pulse" />
-              <span>Model loaded</span>
-            </div>
-          </div>
-
-          {/* Terminal Body */}
-          <div className="p-6">
-            {/* Input Area */}
-            <div className="mb-6">
-              <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">
-                <span className="text-neural-cyan">$</span>
-                <span>Enter your query:</span>
+          <div className="bg-black border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col h-[500px]">
+            
+            {/* Header bar */}
+            <div className="bg-[#E0E0E0] border-b-4 border-black p-3 flex justify-between items-center">
+              <div className="flex gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500 border-2 border-black" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500 border-2 border-black" />
+                <div className="w-3 h-3 rounded-full bg-green-500 border-2 border-black" />
               </div>
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-                  placeholder="Ask about skills, projects, or experience..."
-                  className="flex-1 bg-abyss-800/50 border border-abyss-600/50 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:border-neural-cyan/50 focus:ring-1 focus:ring-neural-cyan/30 transition-all font-mono text-sm"
-                />
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleSubmit}
-                  disabled={isProcessing}
-                  className="px-6 py-3 rounded-lg bg-gradient-to-r from-neural-cyan to-neural-teal text-abyss-950 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isProcessing ? (
-                    <span className="flex items-center gap-2">
-                      <svg
-                        className="w-4 h-4 animate-spin"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                        />
-                      </svg>
-                      Running
-                    </span>
-                  ) : (
-                    "Infer"
-                  )}
-                </motion.button>
-              </div>
-            </div>
-
-            {/* Quick Queries */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              <span className="text-xs text-slate-500">Try:</span>
-              {predefinedQueries.map((q) => (
-                <button
-                  key={q}
-                  onClick={() => setQuery(q)}
-                  className="text-xs px-3 py-1 rounded-full bg-abyss-700/50 text-slate-400 hover:text-neural-cyan hover:bg-abyss-700 transition-all"
-                >
-                  {q}
-                </button>
-              ))}
+              <span className="text-sm font-bold uppercase tracking-widest text-black">fandi-inference-v2.0</span>
+              <button
+                onClick={() => handleCommand("clear")}
+                className="px-2 py-0.5 text-xs font-bold uppercase bg-white border-2 border-black shadow-[2px_2px_0_0_#000] hover:bg-red-100 active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all"
+              >
+                Clear
+              </button>
             </div>
 
             {/* Output Area */}
-            <AnimatePresence>
-              {showOutput && (
-                <motion.div
-                  ref={terminalRef}
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="bg-abyss-900/50 rounded-lg p-4 font-mono text-sm overflow-auto max-h-96"
+            <div 
+              ref={scrollRef}
+              className="flex-1 p-6 overflow-y-auto space-y-3"
+              style={{ scrollbarWidth: "thin", scrollbarColor: "#333 #000" }}
+            >
+              {history.map((entry, i) => (
+                <div 
+                  key={i} 
+                  className={`flex ${
+                    entry.type === "user" 
+                      ? "text-white" 
+                      : entry.type === "system" 
+                      ? "text-[#FFBF00]" 
+                      : "text-[#00FF41]"
+                  }`}
                 >
-                  {/* Processing Stages */}
-                  {processingStages.slice(0, processingStage).map((stage, i) => (
-                    <motion.div
-                      key={stage}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="flex items-center gap-2 mb-2"
-                    >
-                      <span className="text-neural-cyan">▸</span>
-                      <span className="text-slate-400">{stage}</span>
-                      <span className="text-neural-emerald ml-auto">✓</span>
-                    </motion.div>
-                  ))}
-
-                  {/* Currently Processing */}
-                  {isProcessing &&
-                    processingStage < processingStages.length && (
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-neural-cyan">▸</span>
-                        <span className="text-slate-300">
-                          {processingStages[processingStage]}
-                        </span>
-                        <span className="typing-cursor" />
-                      </div>
-                    )}
-
-                  {/* Results */}
-                  {results && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                      className="mt-4 pt-4 border-t border-abyss-700"
-                    >
-                      <div className="text-neural-cyan mb-3">
-                        ═══ Inference Results ═══
-                      </div>
-                      <div className="space-y-4">
-                        {results.map((result, i) => (
-                          <motion.div
-                            key={result.category}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.15 }}
-                            className="bg-abyss-800/50 rounded-lg p-4 border border-abyss-700/50"
-                          >
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-slate-200 font-semibold">
-                                {result.category}
-                              </span>
-                              <span
-                                className={`text-xs px-2 py-1 rounded ${
-                                  result.confidence > 0.9
-                                    ? "bg-neural-emerald/20 text-neural-emerald"
-                                    : result.confidence > 0.8
-                                    ? "bg-neural-cyan/20 text-neural-cyan"
-                                    : "bg-neural-violet/20 text-neural-violet"
-                                }`}
-                              >
-                                {(result.confidence * 100).toFixed(1)}%
-                                confidence
-                              </span>
-                            </div>
-                            {/* Confidence Bar */}
-                            <div className="w-full h-1 bg-abyss-700 rounded-full mb-2 overflow-hidden">
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${result.confidence * 100}%` }}
-                                transition={{ duration: 0.8, delay: i * 0.15 }}
-                                className="h-full bg-gradient-to-r from-neural-cyan to-neural-teal rounded-full"
-                              />
-                            </div>
-                            <p className="text-slate-400 text-sm">
-                              {result.description}
-                            </p>
-                          </motion.div>
-                        ))}
-                      </div>
-
-                      {/* Model Stats */}
-                      <div className="mt-4 pt-4 border-t border-abyss-700 flex flex-wrap gap-4 text-xs text-slate-500">
-                        <span>
-                          Latency:{" "}
-                          <span className="text-neural-cyan">
-                            {(Math.random() * 100 + 50).toFixed(0)}ms
-                          </span>
-                        </span>
-                        <span>
-                          Tokens:{" "}
-                          <span className="text-neural-cyan">
-                            {Math.floor(Math.random() * 50 + 20)}
-                          </span>
-                        </span>
-                        <span>
-                          Model:{" "}
-                          <span className="text-neural-cyan">
-                            fandi-embeddings-v2
-                          </span>
-                        </span>
-                      </div>
-                    </motion.div>
-                  )}
+                  <span className="mr-2 flex-shrink-0">
+                    {entry.type === "user" ? "λ" : entry.type === "system" ? "[*]" : ">>"}
+                  </span>
+                  <p className="leading-relaxed whitespace-pre-wrap">{entry.text}</p>
+                </div>
+              ))}
+              
+              {/* Processing stages */}
+              {isTyping && currentStage && (
+                <motion.div 
+                  initial={{ opacity: 0 }} 
+                  animate={{ opacity: 1 }} 
+                  className="text-[#FFBF00] flex items-center gap-2"
+                >
+                  <span className="animate-pulse">[*]</span>
+                  <span>{currentStage}</span>
                 </motion.div>
               )}
-            </AnimatePresence>
+            </div>
+
+            {/* Input Line */}
+            <div className="p-4 bg-[#1A1A1A] border-t-4 border-black flex items-center gap-2">
+              <label htmlFor="terminal-input" className="text-[#FF5F1F] font-bold flex-shrink-0">
+                fandi@inference:~$
+              </label>
+              <input
+                id="terminal-input"
+                ref={inputRef}
+                type="text"
+                autoFocus
+                className="flex-1 bg-transparent outline-none text-white caret-[#FF5F1F] min-w-0"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleCommand(input)}
+                placeholder="Ask me anything..."
+                disabled={isTyping}
+              />
+              <button 
+                onClick={() => handleCommand(input)}
+                disabled={isTyping || !input.trim()}
+                className="bg-[#FF5F1F] text-black px-4 py-1 font-bold border-2 border-black shadow-[2px_2px_0px_0px_#000] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+              >
+                {isTyping ? "..." : "RUN"}
+              </button>
+            </div>
           </div>
         </motion.div>
       </div>
     </section>
   );
 }
-

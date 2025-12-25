@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { RESUME_DATA } from "@/data/config";
 
-const inter = Inter({
-  variable: "--font-geist-sans",
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
   subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -40,11 +41,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-abyss-950 text-slate-100`}
+        className={`${spaceMono.variable} ${inter.variable} antialiased bg-[#f0f0f0] text-[#1a1a1a]`}
       >
         {children}
       </body>
     </html>
   );
 }
-

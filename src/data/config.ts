@@ -197,10 +197,10 @@ export const RESUME_DATA: ResumeData = {
       startDate: "2024/10",
       endDate: "Current",
       highlights: [
-        "Won RBC employee performance award in 2025.",
-        "Lead a 5 members team developed and deployed the RAG based LLM chatbot in RBC by leveraging FastMCP, LangGraph, Elasticsearch (VectorDB) and self-hosted LangFuse (monitoring), which consumed by entire RBC change management team, projected 30% reduction in operational time by the end of 2026.",
-        "Deployed and Optimized 4 enterprise-level models. Designed Models' architecture to optimize their performance on OCP: Successfully reduced alert triage model's 80% memory consumption by refactoring script.",
-        "Delivered a real-time incident alerting enrichment system using Java Spring Boot, Python FastAPI and Kafka. Consumed by two business units in RBC to help them reduce incident processing time by 30%.",
+        "Won RBC employee **performance award 2025**.",
+        "**Lead** a **5 members** team developed and deployed the **agentic RAG based chatbot** by leveraging **FastMCP**, **LangGraph**, **Elasticsearch** (VectorDB) and **self-hosted LangFuse** (monitoring), which consumed by 100+ employees under RBC change management team, projected **30% reduction in operational time by the end of 2026**.",
+        "Deployed and Optimized **4 enterprise-level models with on-prem OCP**. Designed Models' **architecture** to optimize performance: Successfully reduced alert triage model's **80% memory** consumption by refactoring script.",
+        "Delivered a real-time incident alerting system using Java **Spring Boot**, Python **FastAPI** and **Kafka**. Consumed by two business units in RBC to help them reduce incident processing time by **30%**.",
       ],
     },
     {
@@ -211,7 +211,7 @@ export const RESUME_DATA: ResumeData = {
       endDate: "2023/05",
       highlights: [
         "Worked with Prof. Emine Sarigollu's team to explore customers' interaction for circular economy (CE) topic on Twitter.",
-        "Scraped 500k+ tweets and built NLP pipelines for emotion, sentiment and topic analytics using fine-tuned BERT-based classifiers using PyTorch with CUDA accelerators.",
+        "**Scraped 500k+ tweets** and built NLP pipelines for emotion, sentiment and topic analytics using fine-tuned **BERT-based classifiers** using PyTorch with CUDA accelerators.",
       ],
     },
     {
@@ -222,9 +222,9 @@ export const RESUME_DATA: ResumeData = {
       startDate: "2022/01",
       endDate: "2024/10",
       highlights: [
-        "Developed entity linking API using scikit-learn and Spacy for daily contract analytics, which are used for matching entities in contract documents with CIBC internal suppliers' name.",
-        "Created a hierarchical structure for contracts' parent-child relationship, helping identify contracts' property.",
-        "Enabled large-scale contract documents search (>100k files) by building an automated document metadata extraction pipeline to clean, extract and update data from unstructured text files by using Python and SQLite.",
+        "**Developed entity linking API** using scikit-learn and Spacy for daily contract analytics, which are used for matching entities in contract documents with CIBC internal suppliers' name.",
+        "Created a **hierarchical structure for contracts' parent-child relationship**, helping identify contracts' property.",
+        "**Enabled large-scale contract documents search** (>100k files) by building an automated document metadata extraction pipeline to clean, extract and update data from unstructured text files by using Python and SQLite.",
       ],
     },
     {
@@ -235,9 +235,9 @@ export const RESUME_DATA: ResumeData = {
       startDate: "2021/10",
       endDate: "2021/12",
       highlights: [
-        "Worked in the Alibaba Brain team to analyze and develop a product for Objectives Key Results (OKR) project management tool.",
-        "Partnered with product managers and developers from other teams to Define the indicators measuring the synergy effect among different business units using the OKR data (10 million+ records) from the AlibabaCloud database.",
-        "Applied Neo4j to build a graph database for OKR data to visualize collaboration among departments.",
+        "Worked in the Alibaba Brain team to analyze and develop a product for **Objectives Key Results** (OKR) project management tool.",
+        "Partnered with product managers and developers from other teams to Define the indicators measuring the **synergy effect** among different business units using the OKR data (**10 million+ records**) from the AlibabaCloud database.",
+        "Applied **Neo4j** to build a **graph database** for OKR data to visualize collaboration among departments.",
       ],
     },
     {
@@ -248,8 +248,8 @@ export const RESUME_DATA: ResumeData = {
       startDate: "2021/05",
       endDate: "2021/09",
       highlights: [
-        "Developed an end-to-end generative system to automate supplier profile slides generation process by querying Microsoft Access databases with VBA.",
-        "Created a customized named entity recognition (NER) model to extract key information from contract documents.",
+        "Developed an end-to-end generative system to automate supplier profile slides generation process by querying Microsoft Access **databases** with **VBA**.",
+        "Created a customized named entity recognition **(NER) model** to extract key information from contract documents.",
       ],
     },
     {
@@ -260,8 +260,8 @@ export const RESUME_DATA: ResumeData = {
       startDate: "2020/11",
       endDate: "2021/05",
       highlights: [
-        "Built a semi-supervised model to predict the intention of Canadian small business buying insurance products, and built an LSTM model to predict the Google Trend for insurance products to provide insights for their market team.",
-        "Deployed real-time ML application for social media analytics with Google Cloud Function and Google Data Studio.",
+        "Built a **semi-supervised model** to predict the intention of Canadian small business buying insurance products, and built an **LSTM model** to predict the Google Trend for insurance products to provide insights for their market team.",
+        "Deployed **real-time ML application** for social media analytics with **Google Cloud Function and Google Data Studio**.",
       ],
     },
   ],
@@ -278,8 +278,8 @@ export const RESUME_DATA: ResumeData = {
       startDate: "2023/02",
       endDate: "2023/09",
       description: [
-        "Published on MODELS conference: Prompting or Fine-tuning? A Comparative Study of Large Language Models for Taxonomy Construction as a co-first author.",
-        "Compared different LLMs' prediction performance with prompting and fine-tuning methods for various taxonomy datasets.",
+        "Published on **MODELS conference**: Prompting or Fine-tuning? A Comparative Study of Large Language Models for Taxonomy Construction as a **co-first author**.",
+        "Compared different **LLMs'** prediction performance with prompting and fine-tuning methods for various taxonomy datasets.",
       ],
     },
     {
@@ -290,7 +290,7 @@ export const RESUME_DATA: ResumeData = {
       endDate: "Current",
       description: [
         "Joined as one of the contributors in Sherpa developer community.",
-        "Built search refinement and chain-of-action tools for this agentic LLM framework.",
+        "Built **search refinement** and **chain-of-action** tools for this agentic LLM framework.",
       ],
     },
     {
@@ -300,8 +300,8 @@ export const RESUME_DATA: ResumeData = {
       startDate: "2025/10",
       endDate: "Current",
       description: [
-        "Practicing my vibe coding skill by publishing a dream journal application to apple app store from scratch.",
-        "Vibe coding frontend and backend with Cursor IDE, set up database and edge functions in Supabase, Build and submit app with Expo Application Services.",
+        "Practicing my **vibe coding** skill by publishing a dream journal application to **apple app store** from scratch.",
+        "Vibe coding frontend and backend with **Cursor** IDE, set up database and edge functions in Supabase, Build and submit app with Expo Application Services.",
       ],
     },
     // Other Projects
@@ -323,9 +323,9 @@ export const RESUME_DATA: ResumeData = {
       startDate: "2021/02",
       endDate: "2021/04",
       description: [
-        "Built an application powered by a polynomial regression model to help hosts to adjust their prices.",
-        "Applied AutoML with ML Flow on Databricks to choose the best performance ML model and hyperparameter tuning.",
-        "Applied Docker to containerize ML models and the application orchestrated with Kubernetes.",
+        "Built an application powered by a **polynomial regression model** to help hosts to adjust their prices.",
+        "Applied **AutoML** with ML Flow on Databricks to choose the best performance ML model and hyperparameter tuning.",
+        "Applied **Docker** to containerize ML models and the application orchestrated with **Kubernetes**.",
       ],
     },
     {
@@ -335,8 +335,8 @@ export const RESUME_DATA: ResumeData = {
       startDate: "2019/09",
       endDate: "2020/05",
       description: [
-        "Worked in Prof. M.Maheswaran's lab to test and validate a programming language for Edge-Oriented mobile IoT.",
-        "Developed a continuous integration pipeline for an open-source programming language: Jamscript (a polyglot language that combines C and JavaScript) with Travis CI.",
+        "Worked in Prof. M.Maheswaran's lab to **test and validate** a programming language for Edge-Oriented mobile IoT.",
+        "Developed a continuous integration pipeline for an open-source programming language: Jamscript (a polyglot language that combines C and JavaScript) with **Travis CI**.",
       ],
     },
     {
@@ -346,8 +346,8 @@ export const RESUME_DATA: ResumeData = {
       startDate: "2019/09",
       endDate: "2019/12",
       description: [
-        "Developed a face recognition system from scratch in a team of 5 using Python Sklearn.",
-        "Compared the face recognition performance on PCA and bag-of-words methods.",
+        "Developed a **face recognition system from scratch** in a team of 5 using Python Sklearn.",
+        "Compared the face recognition performance on **PCA** and **bag-of-words** methods.",
       ],
     },
     {
@@ -357,7 +357,7 @@ export const RESUME_DATA: ResumeData = {
       endDate: "2020/04",
       description: [
         "Aero-Structure and Propulsion Sub-Team Member.",
-        "Participated in designing different parts of the rocket model; Won Spaceport America Cup 2018 champion.",
+        "Participated in designing different parts of the rocket model; Won **Spaceport America Cup 2018 champion**.",
       ],
     },
   ],
