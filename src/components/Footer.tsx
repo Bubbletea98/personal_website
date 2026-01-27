@@ -1,11 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { RESUME_DATA } from "@/data/config";
 
 export default function Footer() {
   const { personal } = RESUME_DATA;
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  const resolveHref = (href: string) => {
+    if (href.startsWith("#")) return isHome ? href : `/${href}`;
+    return href;
+  };
 
   const socialLinks = [
     { name: "LinkedIn", href: personal.linkedin, icon: "in" },
@@ -49,7 +57,7 @@ export default function Footer() {
               ].map((link) => (
                 <a
                   key={link.label}
-                  href={link.href}
+                  href={resolveHref(link.href)}
                   className="font-mono text-sm text-white/60 hover:text-[#fbbf24] transition-colors py-1"
                 >
                   → {link.label}

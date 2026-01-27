@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { RESUME_DATA } from "@/data/config";
 
@@ -10,11 +11,20 @@ const navLinks = [
   { label: "Projects", href: "#projects" },
   { label: "Digital Me", href: "#playground" },
   { label: "Contact", href: "#contact" },
+  { label: "App Test", href: "/app_test" },
+  { label: "App Test CN", href: "/app_test_cn" },
 ];
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  const resolveHref = (href: string) => {
+    if (href.startsWith("#")) return isHome ? href : `/${href}`;
+    return href;
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,7 +49,7 @@ export default function Navigation() {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <motion.a
-              href="#"
+              href={isHome ? "#" : "/"}
               className="font-mono font-bold text-xl tracking-tight flex items-center gap-2"
               whileHover={{ x: 3 }}
             >
@@ -56,7 +66,7 @@ export default function Navigation() {
               {navLinks.map((link) => (
                 <motion.a
                   key={link.href}
-                  href={link.href}
+                  href={resolveHref(link.href)}
                   className="px-4 py-2 font-mono text-sm font-bold uppercase tracking-wide border-2 border-transparent hover:border-black hover:bg-[#fbbf24] transition-all"
                   whileHover={{ y: -2 }}
                   whileTap={{ y: 0 }}
@@ -151,7 +161,7 @@ export default function Navigation() {
                 {navLinks.map((link, index) => (
                   <motion.a
                     key={link.href}
-                    href={link.href}
+                    href={resolveHref(link.href)}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
