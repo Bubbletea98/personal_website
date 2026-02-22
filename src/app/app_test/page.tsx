@@ -43,13 +43,24 @@ export default function AppTestPage() {
                 rel="noopener noreferrer"
                 className="block px-5 py-3 font-mono text-sm font-bold uppercase bg-[#fbbf24] border-3 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all text-center"
               >
-                IOS: TestFlight Link →
+                iOS: TestFlight Link →
+              </a>
+            </div>
+
+            <div className="mt-3">
+              <a
+                href="https://www.pgyer.com/shelterfocus"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block px-5 py-3 font-mono text-sm font-bold uppercase bg-[#a3e635] border-3 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all text-center"
+              >
+                Android: Download Link →
               </a>
             </div>
 
             <div className="mt-6 border-t-2 border-black/10 pt-4">
               <div className="font-mono text-xs text-black/60 uppercase tracking-wider">
-                Tip: open on iPhone/iPad/Mac after installing TestFlight.
+                Tip: For iOS, open on iPhone/iPad/Mac after installing TestFlight.
               </div>
             </div>
           </div>

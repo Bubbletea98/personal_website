@@ -46,14 +46,19 @@ export default function AppTestCnPage() {
             </div>
 
             <div className="mt-3">
-              <span className="inline-block px-3 py-1 font-mono text-xs font-bold uppercase border-2 border-black bg-[#fafaf9] shadow-[3px_3px_0_0_rgba(0,0,0,1)]">
-                安卓：开发中！
-              </span>
+              <a
+                href="https://www.pgyer.com/shelterfocus"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block px-5 py-3 font-mono text-sm font-bold uppercase bg-[#a3e635] border-3 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all text-center"
+              >
+                安卓：点我下载测试版 →
+              </a>
             </div>
 
             <div className="mt-6 border-t-2 border-black/10 pt-4 space-y-2">
               <div className="font-mono text-xs text-black/60 uppercase tracking-wider">
-                提示：请在 iPhone/iPad/Mac 上安装 TestFlight 后打开链接。
+                提示：iOS 版请在 iPhone/iPad/Mac 上安装 TestFlight 后打开链接。
               </div>
               
             </div>
