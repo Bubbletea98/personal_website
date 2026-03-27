@@ -8,7 +8,7 @@ export default function Hero() {
   const stats = [
     { label: "Years Experience", value: "6+" },
     { label: "Projects", value: "15+" },
-    { label: "Publication", value: "1" },
+    { label: "Citation", value: "65" },
     { label: "Tech Stack", value: "20+" },
   ];
 

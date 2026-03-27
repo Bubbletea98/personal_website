@@ -272,6 +272,28 @@ export const RESUME_DATA: ResumeData = {
   projects: [
     // ⭐ Priority Projects (Featured)
     {
+      name: "OpenClown – Multi-Perspective Evaluator",
+      platform: "GitHub",
+      link: "https://github.com/Bubbletea98/openclown",
+      startDate: "2026/03",
+      endDate: "Current",
+      description: [
+        "Built an **open-source plugin** for OpenClaw that evaluates AI-completed tasks from **multiple specialized perspectives** — a \"circus\" of independent expert evaluators (Philosopher, Security Expert, Developer, etc.).",
+        "Supports **/clown** command to trigger parallel evaluation, **12 built-in performers**, custom performer creation, multi-language support, and **encore** mode to re-run tasks with evaluator feedback.",
+      ],
+    },
+    {
+      name: "ShelterFocus",
+      platform: "App Test",
+      link: "/app_test",
+      startDate: "2026/01",
+      endDate: "Current",
+      description: [
+        "Designed and developed a **productivity app** to help users with **ADHD** or procrastination issues improve focus and task management.",
+        "Published to **Apple App Store** and **Android**, currently in beta testing phase.",
+      ],
+    },
+    {
       name: "MODELS Conference 2023",
       platform: "arXiv",
       link: "https://arxiv.org/pdf/2309.01715",

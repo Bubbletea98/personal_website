@@ -22,8 +22,10 @@ function renderWithBold(text: string) {
 export default function BentoProjects() {
   const { projects } = RESUME_DATA;
 
-  // Reorder projects to prioritize: MODELS, Sherpa, Dream Journal
+  // Reorder projects to prioritize: OpenClaw, ShelterFocus, MODELS, Sherpa
   const priorityOrder = [
+    "OpenClown – Multi-Perspective Evaluator",
+    "ShelterFocus",
     "MODELS Conference 2023",
     "LLM Framework – Sherpa",
     "Dream Journal App",
@@ -43,10 +45,12 @@ export default function BentoProjects() {
   });
 
   const getGridSpan = (index: number): string => {
-    if (index === 0) return "md:col-span-5";
-    if (index === 1) return "md:col-span-5";
-    if (index === 2) return "md:col-span-6";
-    if (index === 3) return "md:col-span-4";
+    if (index === 0) return "md:col-span-5"; // OpenClaw
+    if (index === 1) return "md:col-span-5"; // ShelterFocus
+    if (index === 2) return "md:col-span-5"; // MODELS
+    if (index === 3) return "md:col-span-5"; // Sherpa
+    if (index === 4) return "md:col-span-6"; // Dream Journal
+    if (index === 5) return "md:col-span-4"; // Stock Signal Bot
     return "md:col-span-5";
   };
 
@@ -89,10 +93,16 @@ export default function BentoProjects() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
               whileHover={{ x: 4, y: 4 }}
-              className={`relative bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all ${getGridSpan(index)}`}
+              className={`relative bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all ${getGridSpan(index)} ${index < 2 ? "ring-2 ring-[#ff6b35] ring-offset-2" : ""}`}
             >
+              {/* Featured Badge */}
+              {index < 2 && (
+                <div className="absolute -top-2.5 left-3 z-10 px-2 py-0.5 bg-[#ff6b35] text-white font-mono text-[10px] font-bold uppercase tracking-wider border border-black">
+                  ★ Featured
+                </div>
+              )}
               {/* Compact Header */}
-              <div 
+              <div
                 className="h-8 border-b-2 border-black flex items-center justify-between px-3"
                 style={{ background: getAccentColor(index) }}
               >

@@ -62,18 +62,20 @@ export default function ModelPlayground() {
     if (lowerQuery.includes("llm") || lowerQuery.includes("language model") || lowerQuery.includes("agent")) {
       const llmSkills = skills.find(s => s.category === "ML Focus")?.skills.join(", ") || "";
       const frameworks = skills.find(s => s.category === "Frameworks")?.skills.join(", ") || "";
-      return `LLM Expertise: ${llmSkills}\nFrameworks: ${frameworks}\n\nAt RBC, I lead development of agentic RAG-based chatbots using FastMCP, LangGraph, and LangFuse — projected 30% reduction in operational time for the enterprise change management team.`;
+      return `LLM Expertise: ${llmSkills}\nFrameworks: ${frameworks}\n\nAt RBC, I lead development of agentic RAG-based chatbots using FastMCP, LangGraph, and LangFuse — projected 30% reduction in operational time for the enterprise change management team.\n\nRecent Projects:\n• OpenClown: An open-source plugin I built for OpenClaw to evaluate LLM actions and tasks from multiple expert perspectives\n• ShelterFocus: A productivity app I built end-to-end using Claude Code vibe coding, published on iOS & Android`;
     }
 
     // Projects - with clean summaries
     if (lowerQuery.includes("project")) {
       const projectSummaries: Record<string, string> = {
+        "OpenClown – Multi-Perspective Evaluator": "Open-source plugin for OpenClaw to evaluate LLM actions and tasks from multiple expert perspectives",
+        "ShelterFocus": "Productivity app built end-to-end with Claude Code vibe coding, for users with ADHD/procrastination",
         "MODELS Conference 2023": "Co-first author on LLM taxonomy paper comparing prompting vs fine-tuning methods",
         "LLM Framework – Sherpa": "Open-source contributor building search refinement and chain-of-action tools",
         "Dream Journal App": "Full-stack iOS app built with Cursor IDE, deployed to Apple App Store",
         "Stock Signal Bot": "Real-time Discord bot for stock alerts using MACD/RSI analytics",
       };
-      const projectList = projects.slice(0, 4).map(p => {
+      const projectList = projects.slice(0, 6).map(p => {
         const summary = projectSummaries[p.name] || p.description[0]?.replace(/\*\*/g, '').slice(0, 60);
         return `• ${p.name}: ${summary}`;
       }).join("\n");
@@ -107,7 +109,7 @@ export default function ModelPlayground() {
         const summary = workSummaries[w.company] || w.highlights[0]?.replace(/\*\*/g, '').slice(0, 50);
         return `• ${w.title} @ ${w.company} (${w.startDate} - ${w.endDate})\n  ${summary}`;
       }).join("\n\n");
-      return `Work Experience:\n${expList}`;
+      return `Work Experience:\n${expList}\n\nSide Projects:\n• OpenClown: An open-source plugin I built for OpenClaw to evaluate LLM actions and tasks from multiple expert perspectives\n• ShelterFocus: A productivity app I built end-to-end using Claude Code vibe coding, published on iOS & Android`;
     }
 
     // Fun questions
@@ -116,7 +118,7 @@ export default function ModelPlayground() {
     }
 
     if (lowerQuery.includes("hobby") || lowerQuery.includes("fun") || lowerQuery.includes("free time")) {
-      return "When not coding, I enjoy exploring new ML frameworks at 2am ☕, contributing to open-source projects like Sherpa, and occasionally building side projects like my Dream Journal App.";
+      return "When not coding, I enjoy exploring new ML frameworks at 2am ☕, building open-source tools like OpenClown (an LLM evaluator plugin for OpenClaw), and vibe coding apps like ShelterFocus with Claude Code.";
     }
 
     if (lowerQuery.includes("contact") || lowerQuery.includes("email") || lowerQuery.includes("reach")) {
